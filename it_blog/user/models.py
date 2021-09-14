@@ -41,8 +41,12 @@ class User(AbstractUser):
 
 @receiver(pre_save, sender=User)
 def hash_passwd(sender, instance, **kwargs):
-    print(kwargs)
-    instance.set_password(instance.password)
+    if (instance.id is None) or (
+        sender.objects.get(id=instance.id).password != instance.password
+    ):
+        instance.set_password(instance.password)
+
+
 
 
 
