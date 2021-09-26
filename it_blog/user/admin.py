@@ -3,7 +3,12 @@ from user.models import User
 
 
 class AdminUser(admin.ModelAdmin):
-    list_display = ("username", "is_staff", "is_active", "show_image")
+    list_display = (
+        "show_image",
+        "username", 
+        "is_staff", 
+        "is_active", 
+    )
     readonly_fields = ("username", "last_login")
     list_filter = ("is_staff",)
     search_fields = ("username",)
@@ -21,8 +26,6 @@ class AdminUser(admin.ModelAdmin):
             },
         ),
     )
-
-
 
 
 admin.site.register(User, AdminUser)
