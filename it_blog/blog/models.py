@@ -1,13 +1,10 @@
-import re
 from django.db import models
 from django.core.exceptions import ValidationError
 from user.models import User
 
 
-
-
 def sharp_valid(value):
-    if not str.startswith("#"):
+    if not value.startswith("#"):
         raise ValidationError(
             f"Invalid value. Maybe '#{value}'?",
         )
@@ -41,8 +38,8 @@ class Post(models.Model):
         verbose_name="Text of post.",
     )
     author = models.ForeignKey(
-        User, 
-        related_name="posts", 
+        User,
+        related_name="posts",
         on_delete=models.CASCADE,
     )
     tags = models.ManyToManyField(
@@ -51,7 +48,7 @@ class Post(models.Model):
     )
     created = models.DateTimeField(
         auto_now_add=True,
-        verbose_name="Date of create posr.",
+        verbose_name="Date of create post.",
     )
     edited = models.DateTimeField(
         auto_now=True,
@@ -60,7 +57,6 @@ class Post(models.Model):
     views = models.BigIntegerField(
         default=0,
         verbose_name="Count of view.",
-        
     )
     is_moderated = models.BooleanField(
         default=False,
@@ -84,23 +80,23 @@ class Comment(models.Model):
     )
     post = models.ForeignKey(
         Post,
-        related_name = "comments",
-        on_delete = models.CASCADE,
+        related_name="comments",
+        on_delete=models.CASCADE,
     )
     text = models.TextField(
-        verbose_name="Text of comment.",
+        verbose_name="Text of comment."
     )
     created = models.DateTimeField(
-        auto_now = True,
-        verbose_name = "Date of create comment.", 
+        auto_now_add=True,
+        verbose_name="Date of create comment.",
     )
     edited = models.DateTimeField(
-        auto_now = True,
-        verbose_name = "Date of edit comment",
+        auto_now=True,
+        verbose_name="Date of edit comment.",
     )
     is_moderated = models.BooleanField(
-        default = False,
-        verbose_name = "If moderated",
+        default=False,
+        verbose_name="If moderated.",
     )
 
     class Meta:

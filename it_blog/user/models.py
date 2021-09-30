@@ -11,13 +11,11 @@ from django.utils.html import mark_safe
 @deconstructible
 class _PhoneValidator:
 
-    _pattern = re.compile(
-    r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$"
-    )
+    _pattern = re.compile(r"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$")
 
     def __call__(self, value):
         if not self._pattern.match(value):
-            raise ValidationError("{!r}, Invalid type.".format(value))
+            raise ValidationError("{!r}, Value is not phone number.".format(value))
 
 
 class User(AbstractUser):
@@ -29,18 +27,23 @@ class User(AbstractUser):
     )
 
     def show_image(self):
-        return mark_safe('<img src="{}" width="50px" />'.format("https://www.vokrug.tv/pic/person/2/b/f/4/2bf448098b7badf3b37e87c510da29bc.jpeg"))
+        return mark_safe(
+            '<img src="{}" width="50px" />'.format(
+                "https://upload.wikimedia.org/wikipedia/en/8/86/Avatar_Aang.png"
+            )
+        )
+
     show_image.short_description = "Avatar"
     show_image.allow_tags = True
-
 
     def send_sms(self, message):
         ...
 
-
     def __str__(self):
         return self.username
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.username})"
 
     class Meta:
         db_table = "user"
@@ -54,8 +57,3 @@ def hash_passwd(sender, instance, **kwargs):
         sender.objects.get(id=instance.id).password != instance.password
     ):
         instance.set_password(instance.password)
-
-
-
-
-

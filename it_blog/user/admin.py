@@ -5,9 +5,9 @@ from user.models import User
 class AdminUser(admin.ModelAdmin):
     list_display = (
         "show_image",
-        "username", 
-        "is_staff", 
-        "is_active", 
+        "username",
+        "is_staff",
+        "is_active",
     )
     readonly_fields = ("username", "last_login")
     list_filter = ("is_staff",)
